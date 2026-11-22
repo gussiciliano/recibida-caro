@@ -43,28 +43,6 @@
     sections.forEach(function (el) { io.observe(el); });
   }
 
-  /* Copiar */
-  document.querySelectorAll('[data-copy]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var text = btn.getAttribute('data-copy');
-      var status = btn.querySelector('.copy-status');
-      function done() {
-        document.querySelectorAll('.copy-status').forEach(function (s) { s.textContent = 'Copiar'; });
-        if (status) status.textContent = '¡Copiado!';
-        clearTimeout(btn._t);
-        btn._t = setTimeout(function () { if (status) status.textContent = 'Copiar'; }, 1600);
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, done);
-      else {
-        var ta = document.createElement('textarea');
-        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-        document.body.appendChild(ta); ta.select();
-        try { document.execCommand('copy'); } catch (e) {}
-        document.body.removeChild(ta); done();
-      }
-    });
-  });
-
   /* Segunda sorpresa */
   var afriStage = document.querySelector('[data-afri-stage]');
   if (afriStage) {
