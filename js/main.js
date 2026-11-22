@@ -271,7 +271,7 @@
     var previousPage = messageBoard.querySelector('[data-message-prev]');
     var nextPage = messageBoard.querySelector('[data-message-next]');
     var pageLabel = messageBoard.querySelector('[data-message-page]');
-    var pageSize = 9, currentPage = 1, messages = [];
+    var pageSize = 6, currentPage = 1, messages = [];
 
     function parseCsv(csv) {
       var rows = [], row = [], field = '', quoted = false, closedQuote = false;
