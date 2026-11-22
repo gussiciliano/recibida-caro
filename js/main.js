@@ -65,6 +65,60 @@
     });
   });
 
+  /* Segunda sorpresa */
+  var afriStage = document.querySelector('[data-afri-stage]');
+  if (afriStage) {
+    var afriBoard = afriStage.querySelector('[data-afri-board]');
+    var afriDrag = afriStage.querySelector('[data-afri-drag]');
+    var afriSurprise = afriStage.querySelector('[data-afri-surprise]');
+    var afriReset = afriStage.querySelector('[data-afri-reset]');
+    var drag = null, collapseTimer = null;
+
+    function revealAfri() {
+      if (afriStage.classList.contains('is-revealed')) return;
+      afriDrag.style.transform = '';
+      afriStage.classList.add('is-revealed');
+      afriBoard.classList.add('is-collapsing');
+      afriSurprise.inert = false;
+      afriReset.focus();
+      afriBoard.inert = true;
+      collapseTimer = setTimeout(function () { afriBoard.hidden = true; }, 450);
+    }
+
+    function endAfriDrag(event, cancelled) {
+      if (!drag || event.pointerId !== drag.id) return;
+      var droppedBelow = !cancelled && event.clientY > drag.bottom && event.clientY - drag.startY > 8;
+      drag = null;
+      afriDrag.style.transform = '';
+      if (droppedBelow) revealAfri();
+    }
+
+    afriDrag.addEventListener('pointerdown', function (event) {
+      if (event.button !== 0 || drag) return;
+      drag = { id: event.pointerId, startY: event.clientY, bottom: afriDrag.getBoundingClientRect().bottom };
+      afriDrag.setPointerCapture(event.pointerId);
+    });
+    afriDrag.addEventListener('pointermove', function (event) {
+      if (!drag || event.pointerId !== drag.id) return;
+      afriDrag.style.transform = 'translateY(' + Math.max(0, event.clientY - drag.startY) + 'px)';
+    });
+    afriDrag.addEventListener('pointerup', function (event) { endAfriDrag(event, false); });
+    afriDrag.addEventListener('pointercancel', function (event) { endAfriDrag(event, true); });
+    afriDrag.addEventListener('lostpointercapture', function (event) { endAfriDrag(event, true); });
+    afriDrag.addEventListener('click', function (event) {
+      if (event.detail === 0) revealAfri();
+    });
+    afriReset.addEventListener('click', function () {
+      clearTimeout(collapseTimer);
+      afriBoard.hidden = false;
+      afriBoard.inert = false;
+      afriBoard.classList.remove('is-collapsing');
+      afriStage.classList.remove('is-revealed');
+      afriSurprise.inert = true;
+      afriDrag.focus();
+    });
+  }
+
   /* Easter egg: patitas */
   var found = [0, 0, 0, 0, 0];
   var dots = document.querySelectorAll('[data-apple-dot]');
@@ -78,7 +132,7 @@
     var n = countFound();
     dots.forEach(function (d, i) { d.classList.toggle('on', !!found[i]); });
     if (label) label.setAttribute('aria-label', n + ' de 5 patitas encontradas');
-    if (msg) msg.textContent = n === 5 ? '¡Encontraste las 5 patitas! Hay una sorpresa para Caro.' : (n === 0 ? 'Hay 5 patitas escondidas en la web. ¿Las encontrás?' : 'Llevás ' + n + ' de 5 patitas. ¡Seguí buscando!');
+    if (msg) msg.textContent = n === 5 ? '¡Encontraste las 5 patitas! Hay una sorpresa para vos.' : (n === 0 ? 'Hay 5 patitas escondidas en la web. ¿Las encontrás?' : 'Llevás ' + n + ' de 5 patitas. ¡Seguí buscando!');
     if (openBtn) openBtn.hidden = n !== 5;
   }
   document.querySelectorAll('[data-apple]').forEach(function (btn) {
@@ -98,6 +152,14 @@
   function openSurprise() {
     if (!modal) return;
     lastFocus = document.activeElement;
+    var videos = [
+      'videos/WhatsApp Video 2026-11-22 at 16.40.10.mp4',
+      'videos/WhatsApp Video 2026-11-22 at 16.41.26.mp4'
+    ];
+    var video = modal.querySelector('[data-surprise-video]');
+    modal.querySelector('[data-video-error]').hidden = true;
+    video.src = videos[Math.floor(Math.random() * videos.length)];
+    video.load();
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
     var c = modal.querySelector('[data-close-surprise]');
@@ -105,24 +167,120 @@
   }
   function closeSurprise() {
     if (!modal) return;
+    modal.querySelector('[data-surprise-video]').pause();
     modal.hidden = true;
     document.body.style.overflow = '';
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
   if (openBtn) openBtn.addEventListener('click', openSurprise);
+  if (modal) modal.querySelector('[data-surprise-video]').addEventListener('error', function () {
+    modal.querySelector('[data-video-error]').hidden = false;
+  });
   document.querySelectorAll('[data-close-surprise]').forEach(function (b) { b.addEventListener('click', closeSurprise); });
   if (modal) modal.addEventListener('click', function (e) { if (e.target === modal) closeSurprise(); });
   document.addEventListener('keydown', function (e) {
     if (!modal || modal.hidden) return;
     if (e.key === 'Escape') { closeSurprise(); return; }
     if (e.key === 'Tab') {
-      var focusables = modal.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+      var focusables = modal.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), video[controls], [tabindex]:not([tabindex="-1"])');
       if (!focusables.length) return;
       var first = focusables[0], last = focusables[focusables.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
+
+  /* Diploma personalizado */
+  if (modal) {
+    var diplomaForm = modal.querySelector('[data-diploma-form]');
+    var diplomaName = modal.querySelector('[data-diploma-name]');
+    var diplomaCanvas = modal.querySelector('[data-diploma-canvas]');
+    var diplomaError = modal.querySelector('[data-diploma-error]');
+    var diplomaContext = diplomaCanvas.getContext('2d');
+
+    function drawDiploma(name) {
+      var ctx = diplomaContext;
+      diplomaCanvas.setAttribute('aria-label', 'Vista previa del diploma de persona amada por Caro para ' + name);
+      ctx.fillStyle = '#fffefa';
+      ctx.fillRect(0, 0, 1200, 900);
+      ctx.fillStyle = '#eef5e8';
+      ctx.fillRect(25, 25, 1150, 850);
+      ctx.fillStyle = '#fffefa';
+      ctx.fillRect(48, 48, 1104, 804);
+      ctx.strokeStyle = '#b7cca9';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(70, 70, 1060, 760);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#ad765d';
+      ctx.font = '32px Georgia, serif';
+      ctx.fillText('✳   CON MUCHO CARIÑO   ✳', 600, 165);
+      ctx.fillStyle = '#496d46';
+      ctx.font = '68px Georgia, serif';
+      ctx.fillText('Diploma de', 600, 270);
+      ctx.font = '54px Georgia, serif';
+      ctx.fillText('persona amada por Caro', 600, 345);
+      ctx.fillStyle = '#74685d';
+      ctx.font = '27px sans-serif';
+      ctx.fillText('Este diploma es para', 600, 430);
+      var size = 68;
+      ctx.font = 'italic ' + size + 'px Georgia, serif';
+      while (ctx.measureText(name).width > 940 && size > 28) {
+        size--;
+        ctx.font = 'italic ' + size + 'px Georgia, serif';
+      }
+      ctx.fillStyle = '#ad765d';
+      ctx.fillText(name, 600, 525, 940);
+      ctx.strokeStyle = '#d9e7d2';
+      ctx.beginPath();
+      ctx.moveTo(220, 560);
+      ctx.lineTo(980, 560);
+      ctx.stroke();
+      ctx.fillStyle = '#74685d';
+      ctx.font = '29px sans-serif';
+      ctx.fillText('Por ser parte de su vida y de este gran festejo.', 600, 630);
+      ctx.fillStyle = '#496d46';
+      ctx.font = 'italic 36px Georgia, serif';
+      ctx.fillText('Con amor, Caro ♡', 600, 730);
+      ctx.fillStyle = '#ad765d';
+      ctx.font = '26px Georgia, serif';
+      ctx.fillText('✳   27 · 11 · 2026   ✳', 600, 790);
+    }
+
+    if (diplomaContext) {
+      drawDiploma('Tu nombre');
+      diplomaName.addEventListener('input', function () {
+        diplomaName.setCustomValidity('');
+        drawDiploma(diplomaName.value.trim() || 'Tu nombre');
+      });
+      diplomaForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var name = diplomaName.value.trim();
+        diplomaName.setCustomValidity(name ? '' : 'Escribí tu nombre para crear el diploma.');
+        if (!diplomaName.reportValidity()) return;
+        diplomaError.hidden = true;
+        drawDiploma(name);
+        diplomaCanvas.toBlob(function (blob) {
+          if (!blob) {
+            diplomaError.textContent = 'No pudimos crear la imagen. Probá de nuevo.';
+            diplomaError.hidden = false;
+            return;
+          }
+          var link = document.createElement('a');
+          var url = URL.createObjectURL(blob);
+          link.href = url;
+          link.download = 'diploma-persona-amada-por-caro.png';
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        }, 'image/png');
+      });
+    } else {
+      diplomaError.textContent = 'Tu navegador no puede crear el diploma.';
+      diplomaError.hidden = false;
+      modal.querySelector('[data-diploma-download]').disabled = true;
+    }
+  }
 
   /* Mural de mensajes */
   var messageBoard = document.querySelector('[data-message-board]');
@@ -179,7 +337,7 @@
       if (!value.trim()) return;
       var urls = value.split(',');
       var unavailable = false;
-      urls.forEach(function (item, index) {
+      urls.forEach(function (item) {
         var url;
         try { url = new URL(item.trim()); }
         catch (error) { unavailable = true; return; }
@@ -187,37 +345,31 @@
           unavailable = true;
           return;
         }
-        var link = document.createElement('a');
-        link.className = 'message-card-photo';
-        link.href = url.href;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer nofollow';
+        var photo = document.createElement('span');
+        photo.className = 'message-card-photo';
         var preview = thumbnailUrl(url);
         var note = document.createElement('span');
         note.className = 'message-card-photo-note';
         note.textContent = 'Vista previa no disponible.';
         if (preview) {
           var image = document.createElement('img');
-          image.alt = '';
+          image.alt = 'Foto compartida para Caro';
           image.loading = 'lazy';
           image.addEventListener('error', function () {
             image.hidden = true;
-            link.insertBefore(note, link.firstChild);
+            photo.replaceChildren(note);
           });
           image.src = preview;
-          link.appendChild(image);
+          photo.appendChild(image);
         } else {
-          link.appendChild(note);
+          photo.appendChild(note);
         }
-        var label = document.createElement('span');
-        label.textContent = urls.length > 1 ? 'Ver foto ' + (index + 1) + ' ↗' : 'Ver foto ↗';
-        link.appendChild(label);
-        card.appendChild(link);
+        card.appendChild(photo);
       });
       if (unavailable) {
         var note = document.createElement('p');
         note.className = 'message-card-photo-note';
-        note.textContent = 'Hay una foto adjunta cuyo enlace no está disponible.';
+        note.textContent = 'No pudimos mostrar una foto adjunta.';
         card.appendChild(note);
       }
     }

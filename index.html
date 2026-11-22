@@ -145,7 +145,21 @@
     <span class="deco deco-code" style="top:28px;right:5%">&lt;TFI /&gt;</span>
     <span class="deco deco-leaf" style="bottom:40px;left:3%">🌿</span>
     <div class="container defense-grid">
-      <img class="defense-photo" data-reveal src="imsg-caro/WhatsApp%20Image%202026-11-22%20at%2013.30.09%20(1).jpeg" alt="Carolina trabajando en la computadora con un gatito" loading="lazy">
+      <figure class="defense-computer" data-reveal>
+        <div class="defense-screen">
+          <div class="defense-screen-bar" aria-hidden="true"><span>● ● ●</span><span>defensa.tfi</span><span>✳</span></div>
+          <div class="defense-display">
+            <img src="imsg-caro/WhatsApp%20Image%202026-11-22%20at%2013.30.09%20(1).jpeg" alt="Carolina trabajando en la computadora con un gatito" loading="lazy">
+            <div class="defense-code" aria-hidden="true">
+              <span class="defense-code-label">/ sprint final</span>
+              <span><i>const</i> objetivo =<br> &quot;recibirse&quot;;</span>
+              <span><i>const</i> equipo =<br> &quot;Caro + 🐈&quot;;</span>
+              <span class="defense-code-status">● todo listo<span class="terminal-cursor">_</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="defense-computer-base" aria-hidden="true"></div>
+      </figure>
 
       <div data-reveal>
         <p class="eyebrow">El gran momento</p>
@@ -275,19 +289,11 @@
 
       <div class="grid-2" style="margin-top:44px;align-items:start;" data-reveal>
         <div class="card">
-          <h3>Datos para transferir</h3>
-          <p>Tocá cualquier dato para copiarlo. Después Caro va a pasar el CBU definitivo.</p>
+          <h3>Alias de Mercado Pago</h3>
+          <p>Tocá el alias para copiarlo.</p>
           <div class="copy-list">
-            <button type="button" class="copy-btn" data-copy="[ALIAS_DE_CARO]">
-              <span><span class="label">Alias</span><span class="value">[ALIAS_DE_CARO]</span></span>
-              <span class="copy-status">Copiar</span>
-            </button>
-            <button type="button" class="copy-btn" data-copy="[CBU_DE_CARO]">
-              <span><span class="label">CBU</span><span class="value">[CBU_DE_CARO]</span></span>
-              <span class="copy-status">Copiar</span>
-            </button>
-            <button type="button" class="copy-btn" data-copy="Carolina [APELLIDO]">
-              <span><span class="label">Titular</span><span class="value">Carolina [APELLIDO]</span></span>
+            <button type="button" class="copy-btn" data-copy="carolina.a.gomez.mp">
+              <span><span class="label">Alias</span><span class="value">carolina.a.gomez.mp</span></span>
               <span class="copy-status">Copiar</span>
             </button>
           </div>
@@ -360,7 +366,12 @@
       <h2 class="section-title">El tablero de Caro</h2>
       <p class="section-lead">Una carrera, muchas historias y un último sprint para celebrar todo el camino.</p>
 
-      <div class="sprint-board">
+      <div class="sprint-stage" data-afri-stage>
+      <div class="afri-surprise" data-afri-surprise inert>
+        <img src="imsg-caro/afri-aparece.png" alt="Afri acurrucada sobre la cabeza de Caro" loading="lazy">
+        <button type="button" class="btn btn-secondary" data-afri-reset>Volver al tablero</button>
+      </div>
+      <div class="sprint-board" data-afri-board>
         <div class="board-top"><span><span aria-hidden="true">✳</span> proyecto / caro-se-recibe</span><span>sprint final · 27.11.26</span></div>
         <div class="board-columns">
           <section class="board-column" aria-labelledby="board-camino">
@@ -386,6 +397,7 @@
           </section>
         </div>
         <div class="board-afri">
+          <button type="button" class="afri-drag" data-afri-drag aria-label="Afri, la gatita, colgada">
           <svg viewBox="100 610 340 990" role="img" aria-label="Afri, la gatita, colgada">
             <defs>
               <clipPath id="afri-outline"><path d="M200 610 Q229 613 231 654 L229 846 Q240 878 267 890 L292 911 L344 907 L373 926 L355 963 Q369 1001 360 1045 Q350 1096 322 1133 Q300 1172 291 1220 Q281 1274 300 1305 Q337 1337 370 1360 Q394 1377 405 1364 Q413 1352 414 1338 Q424 1338 429 1358 Q435 1399 416 1421 Q400 1435 369 1418 Q332 1399 290 1370 Q270 1396 269 1450 L264 1514 Q264 1567 240 1589 Q225 1603 207 1590 L194 1564 Q195 1530 189 1502 L170 1430 Q148 1372 140 1317 Q129 1259 133 1198 Q137 1134 145 1088 Q149 1038 160 987 Q168 950 179 920 Q189 882 191 846 L190 688 Q185 642 200 610Z"/></clipPath>
@@ -399,8 +411,10 @@
             </defs>
             <image href="imsg-caro/afri.jpeg" width="449" height="1600" clip-path="url(#afri-outline)" mask="url(#afri-mask)"/>
           </svg>
+          </button>
           <span>Afri supervisa 🐾</span>
         </div>
+      </div>
       </div>
 
       <div class="apple-hunt" data-apple-label aria-label="0 de 5 patitas encontradas">
@@ -418,6 +432,7 @@
 
       <p class="footer-title">Caro <span>se recibió</span></p>
       <p class="footer-sub">Gracias por acompañar este logro enorme.</p>
+      <p class="second-secret">Psst... hay un segundo easter egg escondido 👀</p>
       <a class="back-top" href="#inicio">Volver arriba</a>
       <div class="footer-deco" aria-hidden="true">
         <span class="paw">🐾</span><span class="paw" style="animation-delay:.4s">🐾</span><span class="paw" style="left:36%;animation-delay:.8s">🐾</span><span class="paw" style="right:19%;animation-delay:1.2s">🐾</span><span class="paw">🐾</span>
@@ -435,15 +450,26 @@
     <div class="surprise-card">
       <button type="button" class="close-modal" data-close-surprise aria-label="Cerrar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <p class="modal-kicker">¡Encontraste las 5 patitas!</p>
-      <h2 class="modal-title" id="sorpresa-titulo">Certificado no oficial</h2>
-      <div class="modal-box">
-        <p style="font-size:40px">🐾🎓💚</p>
-        <p class="modal-big">Se certifica que Caro es una crack</p>
-        <p class="modal-body">Por defender su TFI, bancar la carrera, llegar hasta acá y hacerlo con esa mezcla única de inteligencia, ternura y determinación.</p>
-        <p class="modal-sign">Licenciada en romperla</p>
+      <h2 class="modal-title" id="sorpresa-titulo">Una sorpresa para vos</h2>
+      <p class="modal-note">Un pedacito de Caro, elegido al azar para vos ♡</p>
+      <p class="modal-note">Deslizá hacia abajo para crear y descargar tu diploma como imagen PNG.</p>
+      <video class="surprise-video" data-surprise-video controls playsinline preload="none" aria-label="Video sorpresa">
+        Tu navegador no puede reproducir este video.
+      </video>
+      <p class="surprise-error" data-video-error role="status" hidden>No pudimos reproducir el video. Probá abrir la página en Chrome o Safari.</p>
+      <div class="diploma">
+        <h3>Tu diploma especial</h3>
+        <p>Porque ser parte de la vida de Caro también merece un diploma.</p>
+        <form data-diploma-form>
+          <label for="diploma-nombre">¿Cómo te llamás?</label>
+          <input id="diploma-nombre" data-diploma-name name="nombre" type="text" maxlength="60" autocomplete="name" placeholder="Escribí tu nombre" required>
+          <canvas class="diploma-preview" data-diploma-canvas width="1200" height="900" role="img" aria-label="Vista previa del diploma de persona amada por Caro"></canvas>
+          <p class="surprise-error" data-diploma-error role="status" hidden></p>
+          <button type="submit" class="btn btn-primary" data-diploma-download>Descargar mi diploma en PNG ↓</button>
+        </form>
+        <p class="diploma-privacy">Tu nombre queda en tu dispositivo; no se guarda ni se envía.</p>
       </div>
-      <p class="secret-msg">PD: este certificado no lo emite la UNLa, lo emiten todos los que te queremos y te admiramos.</p>
-      <div style="margin-top:18px"><button type="button" class="btn btn-primary" data-close-surprise>Volver a la web</button></div>
+      <button type="button" class="btn btn-secondary surprise-close" data-close-surprise>Volver a la web</button>
     </div>
   </div>
 
